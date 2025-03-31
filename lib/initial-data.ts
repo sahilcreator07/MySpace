@@ -5,7 +5,7 @@ export const designStyles = [
     id: "minimalist",
     name: "Minimalist",
     description: "Clean lines, simple color palettes, and uncluttered spaces.",
-    imageUrl: "/placeholder.svg?height=300&width=500&text=Minimalist",
+    imageUrl: "/MinimalImage.jpg?height=300&width=500&text=Minimalist",
     tags: ["Clean", "Simple", "Modern"],
     suggestions: [
       "Remove unnecessary furniture",
@@ -19,7 +19,7 @@ export const designStyles = [
     id: "scandinavian",
     name: "Scandinavian",
     description: "Light, airy spaces with functional furniture and natural elements.",
-    imageUrl: "/placeholder.svg?height=300&width=500&text=Scandinavian",
+    imageUrl: "/ScandinavianImage.avif?height=300&width=500&text=Scandinavian",
     tags: ["Light", "Natural", "Functional"],
     suggestions: [
       "Add more natural light",
@@ -33,7 +33,7 @@ export const designStyles = [
     id: "industrial",
     name: "Industrial",
     description: "Raw materials, exposed structures, and vintage factory elements.",
-    imageUrl: "/placeholder.svg?height=300&width=500&text=Industrial",
+    imageUrl: "/industrial.avif?height=300&width=500&text=Industrial",
     tags: ["Raw", "Exposed", "Urban"],
     suggestions: [
       "Add exposed brick wall",
@@ -47,7 +47,7 @@ export const designStyles = [
     id: "mid-century",
     name: "Mid-Century Modern",
     description: "Retro-inspired designs from the mid-20th century with bold colors.",
-    imageUrl: "/placeholder.svg?height=300&width=500&text=Mid-Century",
+    imageUrl: "/midCentury.avif?height=300&width=500&text=Mid-Century",
     tags: ["Retro", "Bold", "Geometric"],
     suggestions: [
       "Add statement furniture pieces",
@@ -61,7 +61,7 @@ export const designStyles = [
     id: "bohemian",
     name: "Bohemian",
     description: "Eclectic mix of patterns, textures, and global influences.",
-    imageUrl: "/placeholder.svg?height=300&width=500&text=Bohemian",
+    imageUrl: "/Bohemian.avif?height=300&width=500&text=Bohemian",
     tags: ["Eclectic", "Textured", "Global"],
     suggestions: [
       "Add more textured textiles",
@@ -75,7 +75,7 @@ export const designStyles = [
     id: "contemporary",
     name: "Contemporary",
     description: "Current trends with clean, subtle sophistication and thoughtful spaces.",
-    imageUrl: "/placeholder.svg?height=300&width=500&text=Contemporary",
+    imageUrl: "/Contemprory.avif?height=300&width=500&text=Contemporary",
     tags: ["Current", "Sophisticated", "Thoughtful"],
     suggestions: [
       "Update with current color trends",

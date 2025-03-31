@@ -21,15 +21,22 @@ export default function MainLayout() {
   const { toast } = useToast()
   const isMobile = useMobile()
 
-  // Restore state from localStorage if available
+  // ✅ Restore state from localStorage if available
   useEffect(() => {
     const savedState = localStorage.getItem("myspace-design-state")
     if (savedState) {
       try {
         const parsedState = JSON.parse(savedState)
-        setDesignState(parsedState)
-        if (parsedState.userImage) {
-          setIsCustomizing(parsedState.generated)
+
+        // ✅ Ensure base64 userImage is carried over correctly
+        setDesignState((prev) => ({
+          ...prev,
+          ...parsedState,
+          userImage: parsedState.userImage || null,
+        }))
+
+        if (parsedState.generated) {
+          setIsCustomizing(true)
         }
       } catch (e) {
         console.error("Failed to parse saved state", e)
@@ -37,7 +44,7 @@ export default function MainLayout() {
     }
   }, [])
 
-  // Save state to localStorage when it changes
+  // ✅ Save to localStorage
   useEffect(() => {
     localStorage.setItem("myspace-design-state", JSON.stringify(designState))
   }, [designState])
@@ -50,13 +57,14 @@ export default function MainLayout() {
     })
   }
 
-  const handleImageUpload = (imageUrl: string) => {
-    setDesignState((prev) => ({ ...prev, userImage: imageUrl }))
+  const handleImageUpload = (originalUrl: string, generatedUrl: string) => {
+    setDesignState((prev) => ({
+      ...prev,
+      userImage: originalUrl,
+      generatedDesign: generatedUrl,
+      generated: true,
+    }))
     setActiveTab("design")
-    toast({
-      title: "Image uploaded successfully",
-      description: "Your image is ready for design transformation",
-    })
   }
 
   const handleGenerateDesign = async () => {
@@ -64,7 +72,6 @@ export default function MainLayout() {
 
     setIsGenerating(true)
 
-    // Simulate AI processing time with progressive updates
     toast({
       title: "Processing your design",
       description: "Analyzing your space and applying design principles...",
@@ -82,7 +89,7 @@ export default function MainLayout() {
     setDesignState((prev) => ({
       ...prev,
       generated: true,
-      generatedDesign: `/placeholder.svg?height=800&width=1200`,
+      generatedDesign: `/generated_images/generated_output.png`, // ✅ Updated if using FastAPI
     }))
 
     setIsGenerating(false)
@@ -102,13 +109,12 @@ export default function MainLayout() {
       description: `"${prompt}" - Updating your design...`,
     })
 
-    // Simulate AI processing time
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
     setDesignState((prev) => ({
       ...prev,
       customizationPrompts: [...prev.customizationPrompts, prompt],
-      generatedDesign: `/placeholder.svg?height=800&width=1200`,
+      generatedDesign: `http://127.0.0.1:8000/generated_images/generated_output.png`
     }))
 
     setIsGenerating(false)
@@ -204,4 +210,3 @@ export default function MainLayout() {
     </div>
   )
 }
-

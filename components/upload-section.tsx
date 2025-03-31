@@ -1,207 +1,129 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useCallback } from "react"
-import { Upload, ImageIcon, Camera, FileWarning } from "lucide-react"
+import React, { useState, useRef, useCallback } from "react"
+import { Upload } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
-import { Progress } from "@/components/ui/progress"
 
 interface UploadSectionProps {
-  onUpload: (imageUrl: string) => void
+  onUpload: (originalImageUrl: string, generatedImageUrl: string) => void;
+  selectedStyle: string;
 }
 
-export default function UploadSection({ onUpload }: UploadSectionProps) {
-  const [dragActive, setDragActive] = useState(false)
+export default function UploadSection({ onUpload, selectedStyle }: UploadSectionProps) {
   const [previewImage, setPreviewImage] = useState<string | null>(null)
-  const [uploadProgress, setUploadProgress] = useState(0)
+  const [userPrompt, setUserPrompt] = useState("Minimalist office with clean lines, neutral tones, sleek ergonomic furniture, natural light, and no unnecessary items or clutter.")
+  const [selectedColor, setSelectedColor] = useState("Neutral")
   const [isUploading, setIsUploading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const { toast } = useToast()
 
-  const handleDrag = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true)
-    } else if (e.type === "dragleave") {
-      setDragActive(false)
+  const colorPalettes = ["Neutral", "Earthy", "Monochrome", "Pastel", "Bold"]
+
+  const handleFile = (file: File) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        setPreviewImage(e.target.result as string)
+      }
     }
-  }, [])
+    reader.readAsDataURL(file)
+  }
 
-  const simulateUpload = useCallback(() => {
-    setIsUploading(true)
-    setUploadProgress(0)
-    setError(null)
-
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          setIsUploading(false)
-          return 100
-        }
-        return prev + 5
-      })
-    }, 100)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0])
-    }
-  }, [])
-
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       handleFile(e.target.files[0])
     }
-  }, [])
+  }
 
-  const handleFile = useCallback(
-    (file: File) => {
-      // Check if file is an image
-      if (!file.type.match("image.*")) {
-        setError("Please upload an image file (JPEG, PNG, etc.)")
-        toast({
-          title: "Invalid file type",
-          description: "Please upload an image file (JPEG, PNG, etc.)",
-          variant: "destructive",
-        })
-        return
-      }
+  const handleConfirm = async () => {
+    if (!previewImage) return
+    setIsUploading(true)
 
-      // Check file size (max 10MB)
-      if (file.size > 10 * 1024 * 1024) {
-        setError("File size exceeds 10MB limit")
-        toast({
-          title: "File too large",
-          description: "Please upload an image smaller than 10MB",
-          variant: "destructive",
-        })
-        return
-      }
+    try {
+      const response = await fetch(previewImage)
+      const blob = await response.blob()
+      const formData = new FormData()
+      formData.append("file", blob, "uploaded.png")
 
-      const cleanup = simulateUpload()
+      const fullPrompt = `${selectedStyle} style with a ${selectedColor} color palette. ${userPrompt}`
+      formData.append("prompt", fullPrompt)
 
-      // Create a preview URL
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setPreviewImage(e.target.result as string)
-        }
-      }
-      reader.readAsDataURL(file)
+      const backendResponse = await fetch("http://127.0.0.1:8000/generate/", {
+        method: "POST",
+        body: formData,
+      })
 
-      return () => cleanup()
-    },
-    [simulateUpload, toast],
-  )
+      const data = await backendResponse.json()
+      console.log("✅ Backend response:", data)
 
-  const handleConfirm = useCallback(() => {
-    if (previewImage) {
-      onUpload(previewImage)
+      onUpload(data.original_image_url, data.generated_image_url)
+
+      toast({ title: "Success", description: "Image uploaded and processed!" })
+    } catch (error) {
+      console.error("Upload failed", error)
+      toast({ title: "Error", description: "Failed to upload image", variant: "destructive" })
+    } finally {
+      setIsUploading(false)
     }
-  }, [previewImage, onUpload])
+  }
 
   return (
     <div className="space-y-6">
       <div className="space-y-2">
         <h2 className="text-2xl font-bold tracking-tight">Upload Your Space</h2>
-        <p className="text-muted-foreground">Upload a photo of your room to visualize design changes.</p>
+        <p className="text-muted-foreground">Upload a photo of your room, choose a mood board and color palette, then enter a design prompt.</p>
       </div>
 
       {!previewImage ? (
         <Card
-          className={`border-2 border-dashed p-12 text-center ${
-            dragActive ? "border-primary bg-primary/5" : "border-border"
-          }`}
-          onDragEnter={handleDrag}
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
+          className="border-2 border-dashed p-12 text-center"
+          onClick={() => fileInputRef.current?.click()}
         >
-          <CardContent className="flex flex-col items-center justify-center space-y-4 pt-6">
-            <div className="rounded-full bg-primary/10 p-4">
-              <Upload className="h-8 w-8 text-primary" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-medium text-lg">Drag and drop your image here</h3>
-              <p className="text-sm text-muted-foreground">or click to browse files (JPEG, PNG)</p>
-            </div>
-            <label className="cursor-pointer">
-              <Button variant="default">Select File</Button>
-              <input type="file" className="hidden" accept="image/*" onChange={handleChange} />
-            </label>
-
-            {error && (
-              <div className="flex items-center gap-2 text-destructive mt-4">
-                <FileWarning className="h-4 w-4" />
-                <span className="text-sm">{error}</span>
-              </div>
-            )}
-
-            {isUploading && (
-              <div className="w-full mt-4 space-y-2">
-                <Progress value={uploadProgress} className="w-full" />
-                <p className="text-sm text-muted-foreground">Uploading... {uploadProgress}%</p>
-              </div>
-            )}
+          <CardContent className="flex flex-col items-center gap-4">
+            <Upload className="h-8 w-8 text-primary" />
+            <Button>Select File</Button>
+            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleChange} />
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
-          <Card className="overflow-hidden">
-            <div className="aspect-video relative">
-              <img
-                src={previewImage || "/placeholder.svg"}
-                alt="Room preview"
-                className="object-contain w-full h-full"
-              />
-            </div>
-          </Card>
-          <div className="flex gap-4 justify-end">
-            <Button variant="outline" onClick={() => setPreviewImage(null)}>
-              Change Image
-            </Button>
-            <Button onClick={handleConfirm}>Continue with this Image</Button>
-          </div>
-        </div>
-      )}
+        <>
+          <img src={previewImage} alt="preview" className="rounded-md shadow w-full max-h-[400px] object-contain" />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-        <Card>
-          <CardContent className="p-6 flex flex-col items-center text-center space-y-2">
-            <Camera className="h-8 w-8 text-primary mb-2" />
-            <h3 className="font-medium">High Quality Images</h3>
-            <p className="text-sm text-muted-foreground">Upload clear, well-lit photos for best results</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex flex-col items-center text-center space-y-2">
-            <ImageIcon className="h-8 w-8 text-primary mb-2" />
-            <h3 className="font-medium">Multiple Angles</h3>
-            <p className="text-sm text-muted-foreground">Try different perspectives of your room</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex flex-col items-center text-center space-y-2">
-            <ImageIcon className="h-8 w-8 text-primary mb-2" />
-            <h3 className="font-medium">Empty Spaces</h3>
-            <p className="text-sm text-muted-foreground">Rooms with less furniture yield better results</p>
-          </CardContent>
-        </Card>
-      </div>
+          <div className="space-y-2">
+            <Input
+              placeholder={`e.g., ${selectedStyle} living room with natural lighting`}
+              value={userPrompt}
+              onChange={(e) => setUserPrompt(e.target.value)}
+            />
+
+            <div className="mt-2">
+              <p className="text-sm font-medium text-muted-foreground mb-1">Select Color Palette:</p>
+              <div className="flex flex-wrap gap-2">
+                {colorPalettes.map((color) => (
+                  <Button
+                    key={color}
+                    variant={selectedColor === color ? "default" : "outline"}
+                    onClick={() => setSelectedColor(color)}
+                    size="sm"
+                  >
+                    {color}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setPreviewImage(null)}>Change</Button>
+            <Button onClick={handleConfirm} disabled={isUploading}>
+              {isUploading ? "Uploading..." : "Continue"}
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   )
 }
-

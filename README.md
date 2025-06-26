@@ -21,7 +21,15 @@ FLOW:
 
 Sample Output:
 
-<img width="494" alt="Screenshot 2025-06-26 at 11 13 53 PM" src="https://github.com/user-attachments/assets/86573eb1-d1c3-4854-a4f7-47a42379cc3c" />
-<img width="497" alt="Screenshot 2025-06-26 at 11 14 45 PM" src="https://github.com/user-attachments/assets/76b6c3f2-abb6-4d30-aebe-5f541442ecca" />
+<img width="570" alt="Screenshot 2025-06-26 at 11 19 33 PM" src="https://github.com/user-attachments/assets/cfd413ba-8d9c-4a8b-b2d8-48331a1c136f" />
+<img width="570" alt="Screenshot 2025-06-26 at 11 19 33 PM" src="https://github.com/user-attachments/assets/cfd413ba-8d9c-4a8b-b2d8-48331a1c136f" />
 
+<img width="572" alt="Screenshot 2025-06-26 at 11 19 48 PM" src="https://github.com/user-attachments/assets/05833a9d-3db1-4cae-b6aa-f10ec6c788a7" />
+<img width="572" alt="Screenshot 2025-06-26 at 11 19 48 PM" src="https://github.com/user-attachments/assets/05833a9d-3db1-4cae-b6aa-f10ec6c788a7" />
+
+
+Visualize your space in 3D:
+
+<img width="566" alt="Screenshot 2025-06-26 at 11 20 06 PM" src="https://github.com/user-attachments/assets/296c5233-4b5a-4a4e-a11e-c44e363e6236" />
+<img width="566" alt="Screenshot 2025-06-26 at 11 20 06 PM" src="https://github.com/user-attachments/assets/296c5233-4b5a-4a4e-a11e-c44e363e6236" />
 

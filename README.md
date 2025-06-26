@@ -5,8 +5,6 @@ In today's world, people want to customize their living spaces according to thei
 
 
 <img width="488" alt="Screenshot 2025-06-26 at 11 15 43 PM" src="https://github.com/user-attachments/assets/71ab76b2-4a34-44b1-bd15-a2e60fd42351" />
-<img width="488" alt="Screenshot 2025-06-26 at 11 15 43 PM" src="https://github.com/user-attachments/assets/71ab76b2-4a34-44b1-bd15-a2e60fd42351" />
-
 
 WHY MySpace:
 
@@ -16,23 +14,14 @@ In today's world, people want to customize their living spaces according to thei
 Architeture:
 
 <img width="1031" alt="Screenshot 2025-06-26 at 11 09 51 PM" src="https://github.com/user-attachments/assets/3c9d3eac-fb6a-4e4d-ae6c-b44efcb7d637" />
-<img width="1031" alt="Screenshot 2025-06-26 at 11 09 51 PM" src="https://github.com/user-attachments/assets/3c9d3eac-fb6a-4e4d-ae6c-b44efcb7d637" />
-
 
 FLOW: 
 
 <img width="890" alt="Screenshot 2025-06-26 at 11 10 40 PM" src="https://github.com/user-attachments/assets/844c55ce-4493-4c69-ab76-06541363ee37" />
-<img width="890" alt="Screenshot 2025-06-26 at 11 10 40 PM" src="https://github.com/user-attachments/assets/844c55ce-4493-4c69-ab76-06541363ee37" />
-
 
 Sample Output:
 
 <img width="494" alt="Screenshot 2025-06-26 at 11 13 53 PM" src="https://github.com/user-attachments/assets/86573eb1-d1c3-4854-a4f7-47a42379cc3c" />
-<img width="494" alt="Screenshot 2025-06-26 at 11 13 53 PM" src="https://github.com/user-attachments/assets/86573eb1-d1c3-4854-a4f7-47a42379cc3c" />
-
-
 <img width="497" alt="Screenshot 2025-06-26 at 11 14 45 PM" src="https://github.com/user-attachments/assets/76b6c3f2-abb6-4d30-aebe-5f541442ecca" />
-<img width="497" alt="Screenshot 2025-06-26 at 11 14 45 PM" src="https://github.com/user-attachments/assets/76b6c3f2-abb6-4d30-aebe-5f541442ecca" />
-<img width="494" alt="Screenshot 2025-06-26 at 11 15 17 PM" src="https://github.com/user-attachments/assets/7c28f003-30f7-4932-bc9d-820e22bb33b0" />
-<img width="494" alt="Screenshot 2025-06-26 at 11 15 17 PM" src="https://github.com/user-attachments/assets/7c28f003-30f7-4932-bc9d-820e22bb33b0" />
+
 
